@@ -36,7 +36,7 @@ public class JDBCBatch {
 			ps.setString(4, "Suresh");
 			ps.addBatch();
 
-			int[] result = ps.executeBatch();
+			int[] result = ps.executeBatch(); // insert 3 order in one go.
 			con.commit();
 			System.out.println(result.length + " orders inserted via batch.");
 
