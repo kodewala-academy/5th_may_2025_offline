@@ -12,3 +12,19 @@ public class Demo1Application {
 	}
 
 }
+
+final class Emp {
+    private String name;
+
+    public Emp(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name; // now the object can be modified
+    }
+}
