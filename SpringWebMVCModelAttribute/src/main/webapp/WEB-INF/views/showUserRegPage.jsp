@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form action="/SpringWebMVCModelAttribute/register" method="post">
+<form action="/SpringWebMVCModelAttribute/registerORM" method="post">
 
        First Name : <input type="text" name="firstName" required><br><br>
 Last Name : <input type="text" name="lastName" required><br><br>
