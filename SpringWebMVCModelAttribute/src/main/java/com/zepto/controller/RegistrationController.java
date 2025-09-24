@@ -2,21 +2,27 @@ package com.zepto.controller;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zepto.controller.utils.Utils;
 import com.zepto.entity.UserDetails;
+import com.zepto.service.EmailService;
 
 @Controller
 public class RegistrationController {
 
 	@Autowired
 	public JdbcTemplate jdbcTemplate;
+	@Autowired
+	private EmailService emailService;
 
 	@PostMapping("/register")
 	public String doRegistration(@ModelAttribute UserInfo info, Model model) {
@@ -79,10 +85,39 @@ public class RegistrationController {
 		System.out.println(" User has been registered successfully, Generated user id is : " + uniqueId
 				+ ". Use the activation link sent over you email.");
 
+		emailService.sendActivationEmail("kodewala.academy@gmail.com", uniqueId);
+
 		info.setUserId(uniqueId);
 		model.addAttribute("user", info);
 		return "registrationConfirmation"; // /WEB-INF/views/registrationConfirmation.jsp
 
 	}
+	
+	
+    @GetMapping("/activate")
+    public String activateUser(@RequestParam("userId") String userId, Model model) {
+        // Load Hibernate config
+        org.hibernate.cfg.Configuration config = new org.hibernate.cfg.Configuration();
+        config.configure("/com/zepto/controller/hibernate/config/hibernate.cfg.xml");
 
+        SessionFactory sessionFactory = config.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction txn = session.beginTransaction();
+
+        // Fetch user by uniqueId (assuming username = uniqueId)
+        UserDetails user = session.get(UserDetails.class, userId); // select * from user_details where userid=93ed9;
+        if (user != null && Utils.PENDING.equals(user.getStatus())) {
+            user.setStatus(Utils.ACTIVE);  // Update status as active 
+            session.update(user);
+            txn.commit();
+            model.addAttribute("message", "Your account has been successfully activated!");
+        } else {
+            model.addAttribute("message", "Invalid activation link or account already active.");
+            txn.rollback();
+        }
+
+        session.close();
+        return "activationResult";  // /WEB-INF/views/activationResult.jsp
+    }
 }
+

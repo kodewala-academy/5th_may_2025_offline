@@ -16,6 +16,7 @@
 		<property name="hbm2ddl.auto">update</property>
 
 		<mapping class="com.zepto.entity.UserDetails" />
+		<mapping class="com.zepto.order.entity.OrderDetails" />
 
 	</session-factory>
 
