@@ -18,6 +18,11 @@
 		<mapping class="com.zepto.entity.UserDetails" />
 		<mapping class="com.zepto.order.entity.OrderDetails" />
 
+		<mapping
+			class="com.zepto.entity.Department" />
+		<mapping
+			class="com.zepto.entity.Employee" />
+
 	</session-factory>
 
 
