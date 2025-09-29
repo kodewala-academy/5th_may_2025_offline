@@ -21,7 +21,7 @@ public class Department {
 	private String name;
 
 	// Lazy loading
-	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Employee> employees;
 
 	public Long getId() {
