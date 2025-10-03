@@ -25,7 +25,7 @@ public class DeptService {
 		deptInfo.setName(dept.getName());
 		deptInfo.setId(dept.getId());
 
-		System.out.println("DeptService.findDept() " + deptRepository.findByName("HR").get().getId());
+	//	System.out.println("DeptService.findDept() " + deptRepository.findByName("HR").get().getId());
 		return deptInfo;
 	}
 }
