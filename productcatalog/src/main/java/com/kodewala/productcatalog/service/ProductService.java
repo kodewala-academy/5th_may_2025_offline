@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kodewala.productcatalog.entity.Product;
+import com.kodewala.productcatalog.exception.InvalidPriceException;
 import com.kodewala.productcatalog.repository.ProductRepository;
 
 @Service
@@ -22,6 +23,12 @@ public class ProductService {
 	}
 
 	public Product addProduct(Product product) {
+
+		if (product.getPrice() == null || product.getPrice() < 1000) {
+			throw new InvalidPriceException("Product price must be at least ₹1000");
+		}
 		return productRepository.save(product);
 	}
+	
+
 }
